@@ -31,21 +31,23 @@ services:
 #      - .:/usr/src/app
 #      - /usr/src/app/node_modules
 #    command: npm run start:dev microservices-project
-
-  auth:
-    build:
-      context: ./
-      dockerfile: ./apps/auth/Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      - rabbitmq
-      - postgres
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm run start:dev auth
-
+#
+#  auth:
+#    build:
+#      context: ./
+#      dockerfile: ./apps/auth/Dockerfile
+#    ports:
+#      - '4001:5001'
+#    env_file:
+#      - .env
+#    depends_on:
+#      - rabbitmq
+#      - postgres
+#    volumes:
+#      - .:/usr/src/app
+#      - /usr/src/app/node_modules
+#    command: npm run start:dev auth
+#
 #  user:
 #    build:
 #      context: ./
