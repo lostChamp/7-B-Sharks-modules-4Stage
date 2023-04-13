@@ -3,40 +3,41 @@ import {JwtService} from "@nestjs/jwt";
 import {ClientProxy} from "@nestjs/microservices";
 import {CreateUserDto} from "../../user/src/dto/create-user.dto";
 import * as bcrypt from "bcryptjs";
+import {lastValueFrom} from "rxjs";
+import {validateEach} from "@nestjs/common/utils/validate-each.util";
 
 
 @Injectable()
 export class AuthService {
 
-  constructor(@Inject("USER_SERVICE") private userService: ClientProxy,
-              private jwtService: JwtService) {}
+  constructor(private jwtService: JwtService,
+              @Inject("USER_SERVICE") private userService: ClientProxy) {}
   async login(userDto: CreateUserDto) {
     const user = await this.validateUser(userDto);
     return this.generateToken(user);
   }
 
 
-  async registration(userDto: CreateUserDto) {
-    const candidate = await this.userService.send({cmd: "create-user-cmd"}, {userDto});
-    console.log(candidate);
-    // if(candidate) {
-    //   throw new HttpException("Пользователь с таким mail существует", HttpStatus.BAD_REQUEST);
-    // }
-    const hashPassword = await bcrypt.hash(candidate["password"], 5);
-    const user = await this.userService.send({cmd: "create-user-cmd"}, {...userDto, password: hashPassword});
+  async registration(dtoUser: CreateUserDto) {
+    const candidate = await lastValueFrom(this.userService.send({cmd: "get-user-email-cmd"}, {dtoUser}));
+    if(candidate) {
+      throw new HttpException("Пользователь с таким mail существует", HttpStatus.BAD_REQUEST);
+    }
+    const hashPassword = await bcrypt.hash(dtoUser.password, 5);
+    dtoUser = {...dtoUser, password: hashPassword};
+    const user = await lastValueFrom(this.userService.send({cmd: "create-user-cmd"}, {dtoUser}));
     return this.generateToken(user);
   }
-// , profileDto: CreateProfileDto
   private async generateToken(user) {
     const payload = {mail: user.mail, id: user.id}
     return {
       token: this.jwtService.sign(payload)
     }
   }
-// , roles: user.roles, profile: user.profile
-  private async validateUser(userDto: CreateUserDto) {
-    const user = await this.userService.send({cmd: "get-user-email-cmd"}, {userDto});
-    const passwordEquals = await bcrypt.compare(userDto.password, user["password"]);
+
+  private async validateUser(dtoUser: CreateUserDto) {
+    const user = await lastValueFrom(this.userService.send({cmd: "get-user-email-cmd"}, {dtoUser}));
+    const passwordEquals = await bcrypt.compare(dtoUser.password, user.password);
     if(user && passwordEquals) {
       return user;
     }

@@ -1,25 +1,32 @@
-import { Controller, Get } from '@nestjs/common';
+import {Controller, Get, Post} from '@nestjs/common';
 import { UserService } from './user.service';
 import {Ctx, MessagePattern, Payload, RmqContext} from "@nestjs/microservices";
 import {CreateUserDto} from "./dto/create-user.dto";
 
-@Controller()
+@Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @MessagePattern({cmd: "get-user-email-cmd"})
-  async getUserByEmail(@Payload("dto") dto: CreateUserDto) {
-    return this.userService.getUserByEmail(dto.mail);
-  }
-
-  @MessagePattern({cmd: "create-user-cmd"})
-  async createUser(@Ctx() context: RmqContext, @Payload("userDto") userDto: CreateUserDto) {
+  async getUserByEmail(@Ctx() context: RmqContext, @Payload("dtoUser") dtoUser: CreateUserDto) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
 
     channel.ack(message);
 
-    const user = this.userService.createUser(userDto);
+    const user = await this.userService.getUserByEmail(dtoUser.mail);
+    console.log(user);
+    return user;
+  }
+
+  @MessagePattern({cmd: "create-user-cmd"})
+  async createUser(@Ctx() context: RmqContext, @Payload("dtoUser") dtoUser: CreateUserDto) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+
+    channel.ack(message);
+
+    const user = await this.userService.createUser(dtoUser);
     console.log(user);
     return user;
   }

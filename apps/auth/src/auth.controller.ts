@@ -1,8 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import {Controller, Get, Inject} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import {Ctx, MessagePattern, Payload, RmqContext} from "@nestjs/microservices";
+import {ClientProxy, Ctx, MessagePattern, Payload, RmqContext} from "@nestjs/microservices";
 import {CreateUserDto} from "../../user/src/dto/create-user.dto";
 import {CreateProfileDto} from "../../profile/src/dto/create-profile.dto";
+import {lastValueFrom} from "rxjs";
 
 @Controller()
 export class AuthController {
@@ -21,14 +22,16 @@ export class AuthController {
   }
 
   @MessagePattern({cmd: "login-cmd"})
-  async login(@Ctx() context: RmqContext, @Payload("dto") dto: CreateUserDto) {
+  async login(@Ctx() context: RmqContext, @Payload("dtoUser") dtoUser: CreateUserDto) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
 
     channel.ack(message);
 
-    const user = await this.authService.login(dto);
+    const user = await this.authService.login(dtoUser);
 
     return user;
   }
+
+
 }

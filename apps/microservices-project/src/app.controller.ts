@@ -8,12 +8,12 @@ export class AppController {
   constructor(@Inject("AUTH_SERVICE") private authService: ClientProxy) {}
 
   @Post("registration")
-  async registration(@Body() dto: CreateUserDto) {
-    return this.authService.send({cmd: "registration-cmd"}, {dto});
+  async registration(@Body() dtoUser: CreateUserDto) {
+    return this.authService.send({cmd: "registration-cmd"}, {dtoUser});
   }
 
   @Post("login")
-  async login(@Body() dto: CreateUserDto) {
-    return this.authService.send({cmd: "login-cmd"}, {dto})
+  async login(@Body() dtoUser: CreateUserDto) {
+    return this.authService.send({cmd: "login-cmd"}, {dtoUser})
   }
 }
