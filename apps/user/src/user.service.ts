@@ -4,21 +4,21 @@ import {ProfileService} from "../../profile/src/profile.service";
 import {InjectModel} from "@nestjs/sequelize";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {CreateProfileDto} from "../../profile/src/dto/create-profile.dto";
+import {ClientProxy} from "@nestjs/microservices";
+import {lastValueFrom} from "rxjs";
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User) private userRepository: typeof User,
-              ) {}
+              @Inject("PROFILE_SERVICE") private profileService: ClientProxy) {}
 
-  // @Inject(forwardRef(() => ProfileService))
-  // private profileService: ProfileService
   async createUser(dtoUser: CreateUserDto) {
     const user = await this.userRepository.create(dtoUser);
-    // const profile = await this.profileService.createProfile(dtoProfile, dtoUser);
+    const profile = await lastValueFrom(this.profileService.send({cmd: "create-profile-cmd"}, {dtoUser}));
     // const role = await this.roleService.getRoleByValue("USER");
     // await user.$set("roles", [role.id]);
     // user.roles = [role];
-    // user.profile = profile;
+    user.profile = profile;
     return user;
   }
 // , dtoProfile: CreateProfileDto

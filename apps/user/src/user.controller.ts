@@ -2,6 +2,7 @@ import {Controller, Get, Post} from '@nestjs/common';
 import { UserService } from './user.service';
 import {Ctx, MessagePattern, Payload, RmqContext} from "@nestjs/microservices";
 import {CreateUserDto} from "./dto/create-user.dto";
+import {CreateProfileDto} from "../../profile/src/dto/create-profile.dto";
 
 @Controller("user")
 export class UserController {
@@ -20,14 +21,14 @@ export class UserController {
   }
 
   @MessagePattern({cmd: "create-user-cmd"})
-  async createUser(@Ctx() context: RmqContext, @Payload("dtoUser") dtoUser: CreateUserDto) {
+  async createUser(@Ctx() context: RmqContext,
+                   @Payload("dtoUser") dtoUser: CreateUserDto) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
 
     channel.ack(message);
 
     const user = await this.userService.createUser(dtoUser);
-    console.log(user);
     return user;
   }
 

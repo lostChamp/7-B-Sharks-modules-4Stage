@@ -4,7 +4,9 @@ import { UserService } from './user.service';
 import * as process from "process";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {User} from "./users.model";
-import {ConfigModule} from "@nestjs/config";
+import {ConfigModule, ConfigService} from "@nestjs/config";
+import {ClientProxyFactory, Transport} from "@nestjs/microservices";
+import {Profile} from "../../profile/src/profile.model";
 
 @Module({
   imports: [
@@ -19,12 +21,35 @@ import {ConfigModule} from "@nestjs/config";
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        models: [User],
+        models: [User, Profile],
         autoLoadModels: true,
       }),
-      SequelizeModule.forFeature([User])
+      SequelizeModule.forFeature([User, Profile])
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [
+      UserService,
+      {
+          provide: "PROFILE_SERVICE",
+          useFactory: (configService: ConfigService) => {
+              const USER = configService.get("RABBITMQ_USER");
+              const PASSWORD = configService.get("RABBITMQ_PASSWORD");
+              const HOST = configService.get("RABBITMQ_HOST");
+              const QUEUE = configService.get("PROFILE_QUEUE");
+
+              return ClientProxyFactory.create({
+                  transport: Transport.RMQ,
+                  options: {
+                      urls: [`amqp://${USER}:${PASSWORD}@${HOST}`],
+                      queue: QUEUE,
+                      queueOptions: {
+                          durable: true
+                      }
+                  }
+              })
+          },
+          inject: [ConfigService]
+      }
+  ],
 })
 export class UserModule {}

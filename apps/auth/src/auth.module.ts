@@ -5,6 +5,9 @@ import * as process from "process";
 import {JwtModule} from "@nestjs/jwt";
 import {ClientProxyFactory, Transport} from "@nestjs/microservices";
 import {ConfigModule, ConfigService} from "@nestjs/config";
+import {SequelizeModule} from "@nestjs/sequelize";
+import {User} from "../../user/src/users.model";
+import {Profile} from "../../profile/src/profile.model";
 
 @Module({
   imports: [

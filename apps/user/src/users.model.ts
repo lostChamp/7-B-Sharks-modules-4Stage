@@ -18,9 +18,9 @@ export class User extends Model<User, UserCreationAttribute> {
     @Column({type: DataType.STRING, allowNull: true})
     password: string;
 
-    // @HasOne(() => Profile)
-    // profile: Profile;
-    //
+    @HasOne(() => Profile)
+    profile: Profile;
+
     // @BelongsToMany(() => Role, () => UserRoles)
     // roles: Role[];
 }
