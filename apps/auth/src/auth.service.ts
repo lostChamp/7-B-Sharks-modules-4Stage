@@ -18,18 +18,11 @@ export class AuthService {
   }
 
 
-  async registration(dtoUser: CreateUserDto) {
-    const candidate = await lastValueFrom(this.userService.send({cmd: "get-user-email-cmd"}, {dtoUser}));
-    if(candidate) {
-      throw new HttpException("Пользователь с таким mail существует", HttpStatus.BAD_REQUEST);
-    }
-    const hashPassword = await bcrypt.hash(dtoUser.password, 5);
-    dtoUser = {...dtoUser, password: hashPassword};
-    const user = await lastValueFrom(this.userService.send({cmd: "create-user-cmd"}, {dtoUser}));
+  async registration(user) {
     return this.generateToken(user);
   }
   private async generateToken(user) {
-    const payload = {mail: user.mail, id: user.id}
+    const payload = {mail: user.mail, id: user.id, profile: user.profile}
     return {
       token: this.jwtService.sign(payload)
     }

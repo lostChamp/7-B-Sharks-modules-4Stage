@@ -1,7 +1,7 @@
 import {BelongsToMany, Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
 import {Role} from "../../role/src/roles.model";
 import {UserRoles} from "../../role/src/user-roles.model";
-import {Profile} from "../../profile/src/profile.model";
+import {Profile} from "./profile.model";
 interface UserCreationAttribute {
     mail: string,
     password: string

@@ -3,10 +3,10 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import * as process from "process";
 import {SequelizeModule} from "@nestjs/sequelize";
-import {User} from "./users.model";
+import {User} from "../../microservices-project/models/users.model";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {ClientProxyFactory, Transport} from "@nestjs/microservices";
-import {Profile} from "../../profile/src/profile.model";
+import {Profile} from "../../microservices-project/models/profile.model";
 
 @Module({
   imports: [
@@ -15,16 +15,16 @@ import {Profile} from "../../profile/src/profile.model";
           envFilePath: "./.env"
       }),
       SequelizeModule.forRoot({
-        dialect: 'postgres',
-        host: process.env.POSTGRES_HOST,
-        port: Number(process.env.POSTGRES_PORT),
-        username: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
-        database: process.env.POSTGRES_DB,
-        models: [User, Profile],
-        autoLoadModels: true,
+          dialect: 'postgres',
+          host: process.env.POSTGRES_HOST,
+          port: Number(process.env.POSTGRES_PORT),
+          username: process.env.POSTGRES_USER,
+          password: process.env.POSTGRES_PASSWORD,
+          database: process.env.POSTGRES_DB,
+          models: [User, Profile],
+          autoLoadModels: true,
       }),
-      SequelizeModule.forFeature([User, Profile])
+      SequelizeModule.forFeature([User])
   ],
   controllers: [UserController],
   providers: [

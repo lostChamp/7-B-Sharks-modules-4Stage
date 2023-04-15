@@ -4,19 +4,20 @@ import {ClientProxy, Ctx, MessagePattern, Payload, RmqContext} from "@nestjs/mic
 import {CreateUserDto} from "../../user/src/dto/create-user.dto";
 import {CreateProfileDto} from "../../profile/src/dto/create-profile.dto";
 import {lastValueFrom} from "rxjs";
+import {User} from "../../microservices-project/models/users.model";
 
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @MessagePattern({cmd: "registration-cmd"})
-  async registration(@Ctx() context: RmqContext, @Payload("dtoUser") dtoUser: CreateUserDto) {
+  async registration(@Ctx() context: RmqContext, @Payload("user") userInfo: typeof User) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
 
     channel.ack(message);
 
-    const user = await this.authService.registration(dtoUser);
+    const user = await this.authService.registration(userInfo);
 
     return user;
   }

@@ -1,5 +1,5 @@
 import {BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {User} from "../../user/src/users.model";
+import {User} from "./users.model";
 
 
 interface ProfileCreationAttribute {

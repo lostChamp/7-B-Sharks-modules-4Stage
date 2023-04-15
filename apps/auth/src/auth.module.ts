@@ -6,8 +6,8 @@ import {JwtModule} from "@nestjs/jwt";
 import {ClientProxyFactory, Transport} from "@nestjs/microservices";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {SequelizeModule} from "@nestjs/sequelize";
-import {User} from "../../user/src/users.model";
-import {Profile} from "../../profile/src/profile.model";
+import {User} from "../../microservices-project/models/users.model";
+import {Profile} from "../../microservices-project/models/profile.model";
 
 @Module({
   imports: [
