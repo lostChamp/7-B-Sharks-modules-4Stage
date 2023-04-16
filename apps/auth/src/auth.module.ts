@@ -47,5 +47,8 @@ import {Profile} from "../../microservices-project/models/profile.model";
       inject: [ConfigService]
     },
   ],
+  exports: [
+    JwtModule
+  ]
 })
 export class AuthModule {}

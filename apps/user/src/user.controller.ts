@@ -5,6 +5,7 @@ import {CreateUserDto} from "./dto/create-user.dto";
 import {CreateProfileDto} from "../../profile/src/dto/create-profile.dto";
 import {User} from "../../microservices-project/models/users.model";
 import {Profile} from "../../microservices-project/models/profile.model";
+import {Role} from "../../microservices-project/models/roles.model";
 
 @Controller("user")
 export class UserController {
@@ -23,27 +24,39 @@ export class UserController {
 
   @MessagePattern({cmd: "create-user-cmd"})
   async createUser(@Ctx() context: RmqContext,
-                   @Payload("dtoUser") dtoUser: CreateUserDto) {
+                   @Payload("dtoUser") dtoUser: CreateUserDto,
+                   @Payload("role") roleInfo: typeof Role) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
 
     channel.ack(message);
 
-    const user = await this.userService.createUser(dtoUser);
+    const user = await this.userService.createUser(dtoUser, roleInfo);
     return user;
   }
 
   @MessagePattern({cmd: "update-user-now-cmd"})
   async updateUserCreatedNow(@Ctx() context: RmqContext,
-                   @Payload("userTemp") userInfo: typeof User,
-                    @Payload("profile") profileInfo: typeof Profile) {
+                             @Payload("userTemp") userInfo: typeof User,
+                             @Payload("profile") profileInfo: typeof Profile,
+                             @Payload("role") roleInfo: typeof Role) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
 
     channel.ack(message);
 
-    const user = await this.userService.updateCreatedUserNow(userInfo, profileInfo);
+    const user = await this.userService.updateCreatedUserNow(userInfo, profileInfo, roleInfo);
     return user;
   }
 
+
+  @MessagePattern({cmd: "get-all-users"})
+  async getAllUsers(@Ctx() context: RmqContext) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+
+    channel.ack(message);
+
+    return this.userService.getAllUsers();
+  }
 }

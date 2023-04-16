@@ -1,6 +1,6 @@
 import {BelongsToMany, Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
-import {Role} from "../../role/src/roles.model";
-import {UserRoles} from "../../role/src/user-roles.model";
+import {Role} from "./roles.model";
+import {UserRoles} from "./user-roles.model";
 import {Profile} from "./profile.model";
 interface UserCreationAttribute {
     mail: string,
@@ -21,6 +21,6 @@ export class User extends Model<User, UserCreationAttribute> {
     @HasOne(() => Profile)
     profile: Profile;
 
-    // @BelongsToMany(() => Role, () => UserRoles)
-    // roles: Role[];
+    @BelongsToMany(() => Role, () => UserRoles)
+    roles: Role[];
 }

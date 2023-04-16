@@ -7,6 +7,8 @@ import {User} from "../../microservices-project/models/users.model";
 import {Profile} from "../../microservices-project/models/profile.model";
 import {ClientProxyFactory, Transport} from "@nestjs/microservices";
 import * as process from "process";
+import {Role} from "../../microservices-project/models/roles.model";
+import {UserRoles} from "../../microservices-project/models/user-roles.model";
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -20,7 +22,7 @@ import * as process from "process";
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Profile],
+      models: [User, Profile, Role, UserRoles],
       autoLoadModels: true,
     }),
     SequelizeModule.forFeature([Profile])

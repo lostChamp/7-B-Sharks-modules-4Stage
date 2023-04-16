@@ -1,6 +1,6 @@
 import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
 import {UserRoles} from "./user-roles.model";
-import {User} from "../../microservices-project/models/users.model";
+import {User} from "./users.model";
 
 interface RoleCreationAttribute {
     value: string,
