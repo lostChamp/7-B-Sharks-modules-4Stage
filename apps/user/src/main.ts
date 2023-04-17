@@ -1,6 +1,4 @@
 import { NestFactory } from '@nestjs/core';
-import {AuthModule} from "../../auth/src/auth.module";
-import * as process from "process";
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
 import {ConfigService} from "@nestjs/config";
 import {UserModule} from "./user.module";

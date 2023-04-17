@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import * as process from "process";
 import {ClientProxyFactory, Transport} from "@nestjs/microservices";
 import {ConfigModule, ConfigService} from "@nestjs/config";
@@ -31,7 +30,6 @@ import {JwtModule} from "@nestjs/jwt";
   ],
   controllers: [AppController],
   providers: [
-      AppService,
       {
         provide: "AUTH_SERVICE",
         useFactory: (configService: ConfigService) => {

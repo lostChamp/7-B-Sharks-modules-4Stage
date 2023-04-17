@@ -2,8 +2,6 @@ import {Inject, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Profile} from "../../microservices-project/models/profile.model";
 import {CreateProfileDto} from "./dto/create-profile.dto";
-import {CreateUserDto} from "../../user/src/dto/create-user.dto";
-import {lastValueFrom} from "rxjs";
 import {ClientProxy} from "@nestjs/microservices";
 
 @Injectable()

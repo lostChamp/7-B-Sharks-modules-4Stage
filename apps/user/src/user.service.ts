@@ -1,12 +1,9 @@
-import {forwardRef, Inject, Injectable} from '@nestjs/common';
+import {Inject, Injectable} from '@nestjs/common';
 import {User} from "../../microservices-project/models/users.model";
-import {ProfileService} from "../../profile/src/profile.service";
 import {InjectModel} from "@nestjs/sequelize";
 import {CreateUserDto} from "./dto/create-user.dto";
-import {CreateProfileDto} from "../../profile/src/dto/create-profile.dto";
 import {ClientProxy} from "@nestjs/microservices";
-import {lastValueFrom} from "rxjs";
-import sequelize from "sequelize";
+
 
 @Injectable()
 export class UserService {

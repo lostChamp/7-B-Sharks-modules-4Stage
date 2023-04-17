@@ -1,10 +1,9 @@
-import {HttpException, HttpStatus, Inject, Injectable, UnauthorizedException} from "@nestjs/common";
+import {Inject, Injectable, UnauthorizedException} from "@nestjs/common";
 import {JwtService} from "@nestjs/jwt";
 import {ClientProxy} from "@nestjs/microservices";
 import {CreateUserDto} from "../../user/src/dto/create-user.dto";
 import * as bcrypt from "bcryptjs";
 import {lastValueFrom} from "rxjs";
-import {validateEach} from "@nestjs/common/utils/validate-each.util";
 
 
 @Injectable()

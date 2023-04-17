@@ -1,13 +1,10 @@
-import {Body, Controller, Get, Inject, Post, UseGuards} from '@nestjs/common';
-import { AppService } from './app.service';
+import {Body, Controller, Inject, Post} from '@nestjs/common';
 import * as bcrypt from "bcryptjs";
 import {ClientProxy} from "@nestjs/microservices";
 import {CreateUserDto} from "../../user/src/dto/create-user.dto";
 import {lastValueFrom} from "rxjs";
-import {Roles} from "../../auth/src/roles-auth.decorator";
-import {RolesGuard} from "../../auth/src/roles.guard";
 import {JwtService} from "@nestjs/jwt";
-import {AuthService} from "../../auth/src/auth.service";
+
 
 @Controller()
 export class AppController {
@@ -31,12 +28,5 @@ export class AppController {
   @Post("login")
   async login(@Body() dtoUser: CreateUserDto) {
     return this.authService.send({cmd: "login-cmd"}, {dtoUser})
-  }
-
-  @Roles("USER")
-  @UseGuards(RolesGuard)
-  @Get("get-all")
-  async getAllUsers() {
-    return this.userService.send({cmd: "get-all-users"}, {});
   }
 }

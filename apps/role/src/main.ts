@@ -1,9 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { RoleModule } from './role.module';
-import {UserModule} from "../../user/src/user.module";
 import {ConfigService} from "@nestjs/config";
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
-import {ProfileModule} from "../../profile/src/profile.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(RoleModule);

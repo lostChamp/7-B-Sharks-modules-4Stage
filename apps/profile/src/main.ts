@@ -1,9 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ProfileModule } from './profile.module';
-import {UserModule} from "../../user/src/user.module";
 import {ConfigService} from "@nestjs/config";
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
-import {Profile} from "../../microservices-project/models/profile.model";
 
 async function bootstrap() {
   const app = await NestFactory.create(ProfileModule);

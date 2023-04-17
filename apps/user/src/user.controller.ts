@@ -1,8 +1,7 @@
-import {Controller, Get, Post} from '@nestjs/common';
+import {Controller} from '@nestjs/common';
 import { UserService } from './user.service';
 import {Ctx, MessagePattern, Payload, RmqContext} from "@nestjs/microservices";
 import {CreateUserDto} from "./dto/create-user.dto";
-import {CreateProfileDto} from "../../profile/src/dto/create-profile.dto";
 import {User} from "../../microservices-project/models/users.model";
 import {Profile} from "../../microservices-project/models/profile.model";
 import {Role} from "../../microservices-project/models/roles.model";
