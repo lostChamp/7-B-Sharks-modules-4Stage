@@ -12,89 +12,89 @@ services:
     env_file:
       - .env
 
-#  microservices-project:
-#    build:
-#      context: ./
-#      dockerfile: ./apps/microservices-project/Dockerfile
-#    ports:
-#      - '4000:5000'
-#    env_file:
-#      - .env
-#    depends_on:
-#      - rabbitmq
-#      - postgres
-#      - auth
-#      - profile
-#      - user
-#      - role
-#    volumes:
-#      - .:/usr/src/app
-#      - /usr/src/app/node_modules
-#    command: npm run start:dev microservices-project
-#
-#  auth:
-#    build:
-#      context: ./
-#      dockerfile: ./apps/auth/Dockerfile
-#    ports:
-#      - '4001:5001'
-#    env_file:
-#      - .env
-#    depends_on:
-#      - rabbitmq
-#      - postgres
-#    volumes:
-#      - .:/usr/src/app
-#      - /usr/src/app/node_modules
-#    command: npm run start:dev auth
-#
-#  user:
-#    build:
-#      context: ./
-#      dockerfile: ./apps/user/Dockerfile
-#    ports:
-#      - '4002:5002'
-#    env_file:
-#      - .env
-#    depends_on:
-#      - rabbitmq
-#      - postgres
-#    volumes:
-#      - .:/usr/src/app
-#      - /usr/src/app/node_modules
-#    command: npm run start:dev auth
-#
-#  role:
-#    build:
-#      context: ./
-#      dockerfile: ./apps/role/Dockerfile
-#    ports:
-#      - '4003:5003'
-#    env_file:
-#      - .env
-#    depends_on:
-#      - rabbitmq
-#      - postgres
-#    volumes:
-#      - .:/usr/src/app
-#      - /usr/src/app/node_modules
-#    command: npm run start:dev role
-#
-#  profile:
-#    build:
-#      context: ./
-#      dockerfile: ./apps/profile/Dockerfile
-#    ports:
-#      - '4004:5004'
-#    env_file:
-#      - .env
-#    depends_on:
-#      - rabbitmq
-#      - postgres
-#    volumes:
-#      - .:/usr/src/app
-#      - /usr/src/app/node_modules
-#    command: npm run start:dev profile
+  microservices-project:
+    build:
+      context: ./
+      dockerfile: ./apps/microservices-project/Dockerfile
+    ports:
+      - '4000:5000'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - postgres
+      - auth
+      - profile
+      - user
+      - role
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev microservices-project
+
+  auth:
+    build:
+      context: ./
+      dockerfile: ./apps/auth/Dockerfile
+    ports:
+      - '4001:5001'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - postgres
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev auth
+
+  user:
+    build:
+      context: ./
+      dockerfile: ./apps/user/Dockerfile
+    ports:
+      - '4002:5002'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - postgres
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev auth
+
+  role:
+    build:
+      context: ./
+      dockerfile: ./apps/role/Dockerfile
+    ports:
+      - '4003:5003'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - postgres
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev role
+
+  profile:
+    build:
+      context: ./
+      dockerfile: ./apps/profile/Dockerfile
+    ports:
+      - '4004:5004'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - postgres
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev profile
 
   postgres:
     image: postgres
